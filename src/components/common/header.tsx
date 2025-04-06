@@ -1,12 +1,22 @@
-import React from 'react'
-import { Link, useNavigate } from "react-router-dom";
+import React, { useState } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
+import pfp from "../assets/pfp.png";
+import './header.css'
 
 function Header() {
-   const navigate=useNavigate(); 
-   const handleLogout = () => {
-      localStorage.removeItem("token");
-      navigate("/auth/login");
-    };
+  const navigate = useNavigate();
+  const [dropdownVisible, setDropdownVisible] = useState(false);
+  const [username] = useState(localStorage.getItem("username") || "User");
+
+  const handleLogout = () => {
+    localStorage.removeItem("token");
+    localStorage.removeItem("username");
+    navigate("/auth/login");
+  };
+
+  const toggleDropdown = () => {
+    setDropdownVisible(!dropdownVisible);
+  };
 
   return (
     <div>
@@ -17,12 +27,22 @@ function Header() {
             <li><Link to="/destinations">Destinations</Link></li>
             <li><Link to="/hotels">Hotels</Link></li>
             <li><Link to="/bookings">Bookings</Link></li>
-            <li><button onClick={handleLogout}>Log Out</button></li>
+            <li>
+              <div className="user-info" onClick={toggleDropdown}>
+                <img src={pfp} alt="User Icon" className="user-icon" />
+                <span>{username}</span>
+                {dropdownVisible && (
+                  <div className="logout-dropdown">
+                    <button onClick={handleLogout}>Logout</button>
+                  </div>
+                )}
+              </div>
+            </li>
           </ul>
         </nav>
       </header>
     </div>
-  )
+  );
 }
 
-export default Header
+export default Header;

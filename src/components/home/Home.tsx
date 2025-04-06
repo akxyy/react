@@ -1,21 +1,22 @@
-import React, { useEffect,useState } from 'react';
+import React, { useEffect } from 'react';
+import { useSelector } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
 import './Home.css';
 import image2 from '../assets/Services.svg';
 import image from "../assets/Hero Content.svg";
 import image3 from "../assets/Book a trip.svg";
-import { useNavigate } from "react-router-dom";
 import Header from '../common/header';
-import Footer from '../common/footer'
+import Footer from '../common/footer';
 
 const Home: React.FC = () => {
   const navigate = useNavigate();
-  const [token] = useState(localStorage.getItem("token"));
+  const { token, username } = useSelector((state: any) => state.user);
 
   useEffect(() => {
     if (!token) {
       navigate("/auth/login");
     }
-  }, [token,navigate]);
+  }, [token, navigate, username]);
 
   return (
     <div className="home-container">

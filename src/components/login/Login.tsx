@@ -1,6 +1,8 @@
 import React, { useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { login } from "../redux/userSlice";
 import "./login.css";
 import logo from "../assets/logo2.jpg";
 
@@ -11,9 +13,9 @@ const Login: React.FC = () => {
     error: "",
     successMessage: "",
   });
-
   const [loginStatus, setLoginStatus] = useState("");
   const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setFormData((prev) => ({
@@ -43,6 +45,8 @@ const Login: React.FC = () => {
 
       if (token) {
         localStorage.setItem("token", token);
+        localStorage.setItem("username", formData.first_name);
+        dispatch(login({ token, username: formData.first_name }));
         setFormData({
           first_name: "",
           password: "",
