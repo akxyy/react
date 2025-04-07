@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import pfp from "../assets/pfp.png";
 import './header.css'
 
 function Header() {
@@ -29,7 +28,7 @@ function Header() {
             <li><Link to="/bookings">Bookings</Link></li>
             <li>
               <div className="user-info" onClick={toggleDropdown}>
-                <img src={pfp} alt="User Icon" className="user-icon" />
+                <img src={process.env.PUBLIC_URL + '/images/pfp.png'} alt="User Icon" className="user-icon" />
                 <span>{username}</span>
                 {dropdownVisible && (
                   <div className="logout-dropdown">

@@ -1,13 +1,7 @@
-div h1{
+/* div h1{
     margin-right: 50%;
     font-family: lora;
     font-size: 60px;
-}
-
-.img1{
-    width: 500px;
-    height: 600px;
-    margin-left: 50px;
 }
 
 .maindiv{
@@ -29,4 +23,31 @@ div h1{
     display: flex;
     width: 100%;
     gap: 20px;
+} */
+
+.img1 {
+    width: 500px;
+    height: 600px;
+    margin-left: 50px;
+}
+
+.image-container {
+    display: flex;
+    width: 50%;
+    gap: 20px;
+    object-fit: cover;
+}
+
+.image-container img {
+    height: 200px;
+    width: 300px;
+    border-radius: 5px;
+}
+
+.maindiv {
+    gap: 40px;
+}
+
+.innerdiv {
+    margin: 20px;
 }

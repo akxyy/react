@@ -2,9 +2,6 @@ import React, { useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import './Home.css';
-import image2 from '../assets/Services.svg';
-import image from "../assets/Hero Content.svg";
-import image3 from "../assets/Book a trip.svg";
 import Header from '../common/header';
 import Footer from '../common/footer';
 
@@ -22,9 +19,9 @@ const Home: React.FC = () => {
     <div className="home-container">
       <Header />
       <div className='middle-container'>
-        <img src={image} alt="img" className='mainImg' />
-        <img src={image2} alt="img2" className='img2' />
-        <img src={image3} alt="img3" className='img3' />
+        <img src={process.env.PUBLIC_URL + '/images/Hero Content.svg'} alt="img" className='mainImg' />
+        <img src={process.env.PUBLIC_URL + '/images/Services.svg'} alt="img2" className='img2' />
+        <img src={process.env.PUBLIC_URL + '/images/Book a trip.svg'} alt="img3" className='img3' />
       </div>
       <Footer />
     </div>

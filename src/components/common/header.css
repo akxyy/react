@@ -2,7 +2,7 @@
     color: black;
     padding: 15px 0;
     z-index: 1;
-    background-color: #ffffff;
+    background-color:whitesmoke;
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
   }
   
@@ -28,8 +28,10 @@
     display: flex;
     align-items: center;
     cursor: pointer;
-    position: relative;
-  }
+    position: absolute;
+    left: 90%;
+    top: 0%;
+}
   
   .user-icon {
     width: 30px;

@@ -2,9 +2,8 @@ import React, { useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
-import { login } from "../redux/userSlice";
+import { login } from "../../redux/userSlice";
 import "./login.css";
-import logo from "../assets/logo2.jpg";
 
 const Login: React.FC = () => {
   const [formData, setFormData] = useState({
@@ -67,7 +66,7 @@ const Login: React.FC = () => {
   return (
     <div className="main">
       <div>
-        <img className="logo" src={logo} alt="logo" />
+        <img className="logo" src={process.env.PUBLIC_URL + '/images/logo2.jpg'}  alt="logo" />
       </div>
       <div className="login-container">
         <h2>Login</h2>
