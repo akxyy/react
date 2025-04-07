@@ -24,7 +24,6 @@
     width: 100%;
     gap: 20px;
 } */
-
 .img1 {
     width: 500px;
     height: 600px;
@@ -50,4 +49,29 @@
 
 .innerdiv {
     margin: 20px;
+}
+
+.destination-item{
+    height: 600px;
+}
+
+.search-bar-container {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 20px;
+    padding-right: 20px;
+}
+
+.search-bar {
+    padding: 10px;
+    width: 250px;
+    font-size: 16px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.search-bar:focus {
+    outline: none;
+    border-color: #007bff;
 }

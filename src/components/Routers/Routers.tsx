@@ -5,6 +5,7 @@ import Home from '../home/Home';
 import Destinations from "../destinations/Destinations"
 import Hotels from '../hotels/Hotels';
 import Booking from '../booking/booking'
+import NotFound from '../NotFound/NotFound';
 
 function Routers() {
   return (
@@ -16,6 +17,7 @@ function Routers() {
         <Route path='/destinations' element={<Destinations/>}/>
         <Route path='/hotels' element={<Hotels/>}/>
         <Route path='/bookings' element={<Booking/>}/>
+        <Route path='*' element={<NotFound/>}/>
       </Routes>
     </Router>
   )
