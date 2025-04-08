@@ -31,7 +31,6 @@ const Destinations: React.FC = () => {
         const response = await apiRequest(`${process.env.REACT_APP_API_URL}/destinations`,"GET");
         setDestinations(response.data.data);
       } catch (error) {
-        console.error("Error fetching destinations:", error);
         setLoginStatus("Error fetching destinations.");
       }
     };
@@ -46,8 +45,7 @@ const Destinations: React.FC = () => {
   const filteredDestinations = destinations.filter(
     (destination) =>
       destination.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      destination.country.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      destination.description.toLowerCase().includes(searchQuery.toLowerCase())
+      destination.country.toLowerCase().includes(searchQuery.toLowerCase())
   );
 
   return (
@@ -64,11 +62,7 @@ const Destinations: React.FC = () => {
         <div className="image-container">
           {filteredDestinations.length > 0 ? (
             filteredDestinations.map((destination) => (
-              <div
-                key={destination.id}
-                className="destination-item"
-                onClick={() => handleDestinationClick(destination.id)}
-              >
+              <div key={destination.id} className="destination-item" onClick={() => handleDestinationClick(destination.id)}>
                 <img src={destination.image_url} alt={destination.name} />
                 <h3>{destination.name}</h3>
                 <p>{destination.country}</p>
@@ -79,7 +73,6 @@ const Destinations: React.FC = () => {
             <p>No destinations found.</p>
           )}
         </div>
-
         <Footer />
       </div>
     </div>

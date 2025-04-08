@@ -1,29 +1,3 @@
-/* div h1{
-    margin-right: 50%;
-    font-family: lora;
-    font-size: 60px;
-}
-
-.maindiv{
-    display: flex;
-    gap: 40px;
-    margin-top: 30px;
-}
-
-.innerdiv{
-    width: 70%;
-}
-
-.innerdiv p{
-    font-family: lora;
-    font-size: 25px;
-}
-
-.image-container{
-    display: flex;
-    width: 100%;
-    gap: 20px;
-} */
 .img1 {
     width: 500px;
     height: 600px;
@@ -31,10 +5,10 @@
 }
 
 .image-container {
-    display: flex;
-    width: 50%;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
     gap: 20px;
-    object-fit: cover;
+    margin-top: 20px;
 }
 
 .image-container img {
@@ -51,8 +25,15 @@
     margin: 20px;
 }
 
-.destination-item{
-    height: 600px;
+.destination-item {
+    border-radius: 8px;
+    padding: 10px;
+    cursor: pointer;
+    transition: transform 0.2s;
+}
+
+.destination-item:hover {
+    transform: scale(1.03);
 }
 
 .search-bar-container {
