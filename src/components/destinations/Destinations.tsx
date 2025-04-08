@@ -28,7 +28,7 @@ const Destinations: React.FC = () => {
 
     const fetchDestinations = async () => {
       try {
-        const response = await apiRequest(`${process.env.REACT_APP_API_URL}/destinations`, "GET");
+        const response = await apiRequest(`${process.env.REACT_APP_API_URL}/destinations`,"GET");
         setDestinations(response.data.data);
       } catch (error) {
         console.error("Error fetching destinations:", error);
@@ -43,28 +43,22 @@ const Destinations: React.FC = () => {
     navigate(`/destination/${id}`);
   };
 
-  const filteredDestinations = destinations.filter((destination) =>
-    destination.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-    destination.country.toLowerCase().includes(searchQuery.toLowerCase()) ||
-    destination.description.toLowerCase().includes(searchQuery.toLowerCase())
+  const filteredDestinations = destinations.filter(
+    (destination) =>
+      destination.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      destination.country.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      destination.description.toLowerCase().includes(searchQuery.toLowerCase())
   );
 
   return (
     <div className="maindiv">
       <Header />
       <div className="search-bar-container">
-        <input
-          type="text"
-          className="search-bar"
-          placeholder="Search destinations..."
-          value={searchQuery}
-          onChange={(e) => setSearchQuery(e.target.value)}
-        />
+        <input type="text" className="search-bar" placeholder="Search destinations..." value={searchQuery} onChange={(e) => setSearchQuery(e.target.value)} />
       </div>
       <div className="innerdiv">
         <h1>Travel To Your Dream Place</h1>
         <p>Explore Popular Destinations</p>
-
         {loginStatus && <div className="status-message">{loginStatus}</div>}
 
         <div className="image-container">
