@@ -1,11 +1,12 @@
-import React from 'react'
+import React from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import Login from '../login/Login';
 import Home from '../home/Home';
-import Destinations from "../destinations/Destinations"
+import Destinations from "../destinations/Destinations";
 import Hotels from '../hotels/Hotels';
-import Booking from '../booking/booking'
+import Booking from '../booking/booking';
 import NotFound from '../NotFound/NotFound';
+import BookingForm from '../booking/BookingForm';
 
 function Routers() {
   return (
@@ -14,13 +15,14 @@ function Routers() {
         <Route path="/" element={<Navigate to="/auth/login" />} />
         <Route path="/auth/login" element={<Login />} />
         <Route path="/home" element={<Home />} />
-        <Route path='/destinations' element={<Destinations/>}/>
-        <Route path='/hotels' element={<Hotels/>}/>
-        <Route path='/bookings' element={<Booking/>}/>
-        <Route path='*' element={<NotFound/>}/>
+        <Route path="/destinations" element={<Destinations />} />
+        <Route path="/hotels" element={<Hotels />} />
+        <Route path="/bookings" element={<Booking />} />
+        <Route path="*" element={<NotFound />} />
+        <Route path="/booking-form" element={<BookingForm />} />
       </Routes>
     </Router>
-  )
+  );
 }
 
-export default Routers
+export default Routers;

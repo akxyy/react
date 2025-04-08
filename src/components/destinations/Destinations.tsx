@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
 import { apiRequest } from "../helpers/helperFunction";
 import "./destinations.css";
 import Header from "../common/header";
@@ -17,7 +16,6 @@ const Destinations: React.FC = () => {
   const [destinations, setDestinations] = useState<Destination[]>([]);
   const [loginStatus, setLoginStatus] = useState<string>("");
   const [searchQuery, setSearchQuery] = useState<string>("");
-  const navigate = useNavigate();
 
   useEffect(() => {
     const token = localStorage.getItem("token");
@@ -28,7 +26,10 @@ const Destinations: React.FC = () => {
 
     const fetchDestinations = async () => {
       try {
-        const response = await apiRequest(`${process.env.REACT_APP_API_URL}/destinations`,"GET");
+        const response = await apiRequest(
+          `${process.env.REACT_APP_API_URL}/destinations`,
+          "GET"
+        );
         setDestinations(response.data.data);
       } catch (error) {
         setLoginStatus("Error fetching destinations.");
@@ -37,10 +38,6 @@ const Destinations: React.FC = () => {
 
     fetchDestinations();
   }, []);
-
-  const handleDestinationClick = (id: number) => {
-    navigate(`/destination/${id}`);
-  };
 
   const filteredDestinations = destinations.filter(
     (destination) =>
@@ -52,7 +49,13 @@ const Destinations: React.FC = () => {
     <div className="maindiv">
       <Header />
       <div className="search-bar-container">
-        <input type="text" className="search-bar" placeholder="Search destinations..." value={searchQuery} onChange={(e) => setSearchQuery(e.target.value)} />
+        <input
+          type="text"
+          className="search-bar"
+          placeholder="Search destinations..."
+          value={searchQuery}
+          onChange={(e) => setSearchQuery(e.target.value)}
+        />
       </div>
       <div className="innerdiv">
         <h1>Travel To Your Dream Place</h1>
@@ -62,8 +65,11 @@ const Destinations: React.FC = () => {
         <div className="image-container">
           {filteredDestinations.length > 0 ? (
             filteredDestinations.map((destination) => (
-              <div key={destination.id} className="destination-item" onClick={() => handleDestinationClick(destination.id)}>
-                <img src={destination.image_url} alt={destination.name} />
+              <div key={destination.id} className="destination-item">
+                <img
+                  src={destination.image_url}
+                  alt={destination.name}
+                />
                 <h3>{destination.name}</h3>
                 <p>{destination.country}</p>
                 <p>{destination.description}</p>
