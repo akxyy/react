@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from "react";
-import { apiRequest } from "../helpers/helperFunction";
 import "./destinations.css";
 import Header from "../common/header";
 import Footer from "../common/footer";
+import { apiRequest } from "../helpers/helperFunction";
 
 interface Destination {
   id: number;
@@ -12,64 +12,131 @@ interface Destination {
   image_url: string;
 }
 
+interface DestinationState {
+  destinations: Destination[];
+  allDestinations: Destination[];
+  loginStatus: string;
+  searchQuery: string;
+  searchResult: Destination[];
+}
+
 const Destinations: React.FC = () => {
-  const [destinations, setDestinations] = useState<Destination[]>([]);
-  const [loginStatus, setLoginStatus] = useState<string>("");
-  const [searchQuery, setSearchQuery] = useState<string>("");
+  const [state, setState] = useState<DestinationState>({
+    destinations: [],
+    allDestinations: [],
+    loginStatus: "",
+    searchQuery: "",
+    searchResult: [],
+  });
 
   useEffect(() => {
     const token = localStorage.getItem("token");
     if (!token) {
-      setLoginStatus("Please login to view destinations.");
+      setState((prev) => ({
+        ...prev,
+        loginStatus: "Please login to view destinations.",
+      }));
       return;
     }
 
     const fetchDestinations = async () => {
       try {
-        const response = await apiRequest(
-          `${process.env.REACT_APP_API_URL}/destinations`,
-          "GET"
-        );
-        setDestinations(response.data.data);
-      } catch (error) {
-        setLoginStatus("Error fetching destinations.");
+        const response = await apiRequest("/destinations", "get");
+        setState((prev) => ({
+          ...prev,
+          destinations: response.data.data,
+          allDestinations: response.data.data,
+        }));
+      } catch {
+        setState((prev) => ({
+          ...prev,
+          loginStatus: "Error fetching destinations.",
+        }));
       }
     };
 
     fetchDestinations();
   }, []);
 
-  const filteredDestinations = destinations.filter(
-    (destination) =>
-      destination.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      destination.country.toLowerCase().includes(searchQuery.toLowerCase())
-  );
+  const handleSearchChange = async (query: string) => {
+    setState((prev) => ({
+      ...prev,
+      searchQuery: query,
+      searchResult: [],
+    }));
+
+    if (query.trim() === "") {
+      setState((prev) => ({
+        ...prev,
+        destinations: prev.allDestinations,
+        searchResult: [],
+      }));
+      return;
+    }
+
+    const matched = state.allDestinations.find(
+      (d) =>
+        d.name.toLowerCase().includes(query.toLowerCase()) ||
+        d.country.toLowerCase().includes(query.toLowerCase())
+    );
+
+    if (matched) {
+      try {
+        const response = await apiRequest(`/destinations/${matched.id}`, "get");
+        setState((prev) => ({
+          ...prev,
+          searchResult: response.data.data,
+          destinations: [],
+        }));
+      } catch {
+        setState((prev) => ({
+          ...prev,
+          searchResult: [],
+          destinations: [],
+        }));
+      }
+    } else {
+      setState((prev) => ({
+        ...prev,
+        searchResult: [],
+        destinations: [],
+      }));
+    }
+  };
 
   return (
     <div className="maindiv">
-      <Header />
+      <Header/>
       <div className="search-bar-container">
         <input
           type="text"
           className="search-bar"
           placeholder="Search destinations..."
-          value={searchQuery}
-          onChange={(e) => setSearchQuery(e.target.value)}
+          value={state.searchQuery}
+          onChange={(e) => handleSearchChange(e.target.value)}
         />
       </div>
       <div className="innerdiv">
         <h1>Travel To Your Dream Place</h1>
         <p>Explore Popular Destinations</p>
-        {loginStatus && <div className="status-message">{loginStatus}</div>}
+        {state.loginStatus && (
+          <div className="status-message">{state.loginStatus}</div>
+        )}
 
         <div className="image-container">
-          {filteredDestinations.length > 0 ? (
-            filteredDestinations.map((destination) => (
+          {state.searchResult.length > 0 ? (
+            state.searchResult.map((destination) => (
               <div key={destination.id} className="destination-item">
-                <img
-                  src={destination.image_url}
-                  alt={destination.name}
-                />
+                <img src={destination.image_url} alt={destination.name} />
+                <h3>{destination.name}</h3>
+                <p>{destination.country}</p>
+                <p>{destination.description}</p>
+              </div>
+            ))
+          ) : state.destinations.length > 0 ? (
+            state.destinations.map((destination) => (
+              <div key={destination.id} className="destination-item">
+                <img src={destination.image_url} alt={destination.name} />
                 <h3>{destination.name}</h3>
                 <p>{destination.country}</p>
                 <p>{destination.description}</p>
@@ -79,8 +146,8 @@ const Destinations: React.FC = () => {
             <p>No destinations found.</p>
           )}
         </div>
-        <Footer />
       </div>
+      <Footer/>
     </div>
   );
 };

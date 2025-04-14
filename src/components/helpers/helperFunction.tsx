@@ -1,8 +1,12 @@
 import axios from "axios";
 
-export const apiRequest = async (url: string, method: string, data?: any) => {
+export const apiRequest = async (path: string, method: string, data?: any) => {
   try {
-    const response = await axios({method,url,data,
+    const url = `${process.env.REACT_APP_API_URL}${path}`;
+    const response = await axios({
+      method,
+      url,
+      data,
       headers: {
         Authorization: `Bearer ${localStorage.getItem("token")}`,
       },

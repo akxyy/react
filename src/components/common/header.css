@@ -68,11 +68,6 @@
     background-color: #f0f0f0;
   }
   
-  .logout-dropdown {
-    display: none;
-  }
-  
   .user-info:hover .logout-dropdown {
     display: block;
   }
-  

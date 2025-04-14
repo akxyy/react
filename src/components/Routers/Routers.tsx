@@ -18,7 +18,7 @@ function Routers() {
         <Route path="/destinations" element={<Destinations />} />
         <Route path="/hotels" element={<Hotels />} />
         <Route path="/bookings" element={<Booking />} />
-        <Route path="*" element={<NotFound />} />
+        <Route path="*" element={<NotFound/>}/>
         <Route path="/booking-form" element={<BookingForm />} />
       </Routes>
     </Router>

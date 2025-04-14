@@ -1,11 +1,13 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import './header.css'
+import './header.css';
 
 function Header() {
   const navigate = useNavigate();
   const [dropdownVisible, setDropdownVisible] = useState(false);
-  const [username] = useState(localStorage.getItem("username") || "User");
+  const [username] = useState(localStorage.getItem("username") ?? "User");
+
+  const path = window.location.pathname;
 
   const handleLogout = () => {
     localStorage.removeItem("token");
@@ -22,10 +24,18 @@ function Header() {
       <header className="header">
         <nav>
           <ul>
-            <li><Link to="/home">Home</Link></li>
-            <li><Link to="/destinations">Destinations</Link></li>
-            <li><Link to="/hotels">Hotels</Link></li>
-            <li><Link to="/bookings">Bookings</Link></li>
+            {path !== '/home' && (
+              <li className='first_link'><Link to="/home">Home</Link></li>
+            )}
+            {path !== '/destinations' && (
+              <li><Link to="/destinations">Destinations</Link></li>
+            )}
+            {path !== '/hotels' && (
+              <li><Link to="/hotels">Hotels</Link></li>
+            )}
+            {path !== '/bookings' && (
+              <li><Link to="/bookings">Bookings</Link></li>
+            )}
             <li>
               <div className="user-info" onClick={toggleDropdown}>
                 <img src={process.env.PUBLIC_URL + '/images/pfp.png'} alt="User Icon" className="user-icon" />

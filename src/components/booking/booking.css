@@ -1,8 +1,39 @@
-.booking-details p {
-    font-size: 16px;
-    margin-bottom: 8px;
-  }
-  
-  .booking-details strong {
-    font-weight: bold;
-  }  
+.booking-container {
+  max-width: 700px;
+  margin: 40px auto;
+  padding: 20px;
+}
+
+.title {
+  text-align: center;
+  color: #2c3e50;
+  margin-bottom: 20px;
+}
+
+.booking-list ul {
+  padding: 0;
+  list-style-type: none;
+}
+
+.booking-item {
+  background: #f4f6f8;
+  border-left: 4px solid #3498db;
+  padding: 16px;
+  margin-bottom: 16px;
+  border-radius: 6px;
+  transition: box-shadow 0.2s;
+}
+
+.booking-item:hover {
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
+}
+
+.booking-item p {
+  margin: 6px 0;
+  color: #333;
+  font-size: 14px;
+}
+
+.booking-item strong {
+  color: #2c3e50;
+}

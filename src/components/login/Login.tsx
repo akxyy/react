@@ -1,9 +1,9 @@
 import React, { useState } from "react";
-import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { login } from "../../redux/userSlice";
 import "./login.css";
+import { apiRequest } from "../helpers/helperFunction";
 
 const Login: React.FC = () => {
   const [formData, setFormData] = useState({
@@ -22,7 +22,7 @@ const Login: React.FC = () => {
       [e.target.name]: e.target.value,
     }));
   };
-  
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
@@ -31,14 +31,11 @@ const Login: React.FC = () => {
       return;
     }
 
-    try {
-      const loginResponse = await axios.post(
-        `${process.env.REACT_APP_API_URL}/auth/login`,
-        {
-          first_name: formData.first_name,
-          password: formData.password,
-        }
-      );
+    try { 
+      const loginResponse=await apiRequest("/auth/login","POST",{
+        first_name:formData.first_name,
+        password:formData.password
+      })
 
       const { token } = loginResponse.data;
 
@@ -66,7 +63,11 @@ const Login: React.FC = () => {
   return (
     <div className="main">
       <div>
-        <img className="logo" src={process.env.PUBLIC_URL + '/images/logo2.jpg'}  alt="logo" />
+        <img
+          className="logo"
+          src={process.env.PUBLIC_URL + "/images/logo2.jpg"}
+          alt="logo"
+        />
       </div>
       <div className="login-container">
         <h2>Login</h2>
@@ -100,4 +101,4 @@ const Login: React.FC = () => {
   );
 };
 
-export default Login;
+export default Login

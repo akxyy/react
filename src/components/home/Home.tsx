@@ -17,13 +17,13 @@ const Home: React.FC = () => {
 
   return (
     <div className="home-container">
-      <Header />
+      <Header/>
       <div className='middle-container'>
         <img src={process.env.PUBLIC_URL + '/images/Hero Content.svg'} alt="img" className='mainImg' />
         <img src={process.env.PUBLIC_URL + '/images/Services.svg'} alt="img2" className='img2' />
         <img src={process.env.PUBLIC_URL + '/images/Book a trip.svg'} alt="img3" className='img3' />
       </div>
-      <Footer />
+      <Footer/>
     </div>
   );
 };

@@ -1,145 +1,220 @@
 import React, { useState, useEffect } from "react";
-import { useNavigate, useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
+import { apiRequest } from "../helpers/helperFunction";
+import "./BookingForm.css";
 
 const BookingForm: React.FC = () => {
-  const location = useLocation();
-  const navigate = useNavigate();
+  const navigate = useNavigate()
+  const location = useLocation()
+  const { hotelName = "", pricePerNight = 0 } = location.state
 
-  const hotelName = location.state?.hotelName || '';
-  const pricePerNight = location.state?.pricePerNight || 0;
+  const [formSubmitted, setFormSubmitted] = useState(false)
 
-  const [name, setName] = useState<string>("");
-  const [phone, setPhone] = useState<string>("");
-  const [checkInDate, setCheckInDate] = useState<string>("");
-  const [checkOutDate, setCheckOutDate] = useState<string>("");
-  const [checkInTime, setCheckInTime] = useState<string>("");
-  const [checkOutTime, setCheckOutTime] = useState<string>("");
-  const [duration, setDuration] = useState<number>(0);
-  const [totalPrice, setTotalPrice] = useState<number>(0);
+  const [formData, setFormData] = useState({
+    name: "",
+    phone: "",
+    checkInDate: "",
+    checkOutDate: "",
+    checkInTime: "",
+    checkOutTime: "",
+    duration: 0,
+    totalPrice: 0,
+  });
 
-  const calculateDurationAndPrice = () => {
-    const checkIn = new Date(`${checkInDate}T${checkInTime}`);
-    const checkOut = new Date(`${checkOutDate}T${checkOutTime}`);
-    const durationInMillis = checkOut.getTime() - checkIn.getTime();
-    const durationInDays = Math.ceil(durationInMillis / (1000 * 3600 * 24));
+  useEffect(() => {
+    if (
+      formData.checkInDate &&
+      formData.checkOutDate &&
+      formData.checkInTime &&
+      formData.checkOutTime &&
+      pricePerNight > 0
+    ) {
+      const checkIn = new Date(
+        `${formData.checkInDate}T${formData.checkInTime}`
+      );
+      const checkOut = new Date(
+        `${formData.checkOutDate}T${formData.checkOutTime}`
+      );
 
-    if (durationInDays > 0) {
-      setDuration(durationInDays);
-      setTotalPrice(durationInDays * pricePerNight);
+      const durationInMillis = checkOut.getTime() - checkIn.getTime();
+      const durationInDays = Math.ceil(durationInMillis / (1000 * 3600 * 24));
+
+      if (durationInDays > 0) {
+        setFormData((prev) => ({
+          ...prev,
+          duration: durationInDays,
+          totalPrice: durationInDays * pricePerNight,
+        }));
+      } else {
+        setFormData((prev) => ({
+          ...prev,
+          duration: 0,
+          totalPrice: 0,
+        }));
+      }
+    }
+  }, [
+    formData.checkInDate,
+    formData.checkOutDate,
+    formData.checkInTime,
+    formData.checkOutTime,
+    pricePerNight,
+  ]);
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target;
+
+    if (name === "name") {
+      setFormData((prev) => ({
+        ...prev,
+        [name]: value.trimStart(),
+      }));
+    } else if (name === "phone") {
+      if (value.length <= 10 && /^\d*$/.test(value)) {
+        setFormData((prev) => ({
+          ...prev,
+          [name]: value,
+        }));
+      }
     } else {
-      setDuration(0);
-      setTotalPrice(0);
+      setFormData((prev) => ({
+        ...prev,
+        [name]: value,
+      }));
     }
   };
 
-  useEffect(() => {
-    if (checkInDate && checkOutDate && checkInTime && checkOutTime) {
-      calculateDurationAndPrice();
-    }
-  }, [checkInDate, checkOutDate, checkInTime, checkOutTime]);
-
-  const handleSubmit = (event: React.FormEvent) => {
+  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
+    setFormSubmitted(true);
+
+    if (
+      !formData.name.trim() ||
+      !formData.phone ||
+      !formData.checkInDate ||
+      !formData.checkOutDate ||
+      !formData.checkInTime ||
+      !formData.checkOutTime ||
+      formData.duration <= 0
+    ) {
+      return;
+    }
 
     const newBooking = {
-      name,
-      phone,
-      hotelName,
-      checkInDate,
-      checkInTime,
-      checkOutDate,
-      checkOutTime,
-      totalPrice,
-      duration,
-      bookingStatus: "Completed",
+      name: formData.name.trim(),
+      checkin: formData.checkInDate,
+      checkout: formData.checkOutDate,
+      duration: formData.duration.toString(),
+      Price: formData.totalPrice.toString(),
+      hotel_name: hotelName,
+      phone: formData.phone,
     };
 
-    const bookings = JSON.parse(localStorage.getItem("bookings") || "[]");
-    bookings.push(newBooking);
-    localStorage.setItem("bookings", JSON.stringify(bookings));
-
-    navigate("/bookings", { state: newBooking });
+    try {
+      await apiRequest("/booking", "POST", newBooking);
+      navigate("/bookings");
+    } catch (error) {
+      console.error("Error submitting booking:", error);
+    }
   };
 
   return (
-    <div className="maindiv">
+    <div className="formdiv">
       <h1>Booking Form</h1>
-      <form onSubmit={handleSubmit}>
+      <form onSubmit={handleSubmit} noValidate>
         <div>
           <label>Name:</label>
           <input
             type="text"
-            value={name}
-            onChange={(e) => setName(e.target.value)}
+            name="name"
+            value={formData.name}
+            onChange={handleChange}
             required
           />
+          {formSubmitted && !formData.name.trim() && (
+            <span className="error">Name is required</span>
+          )}
         </div>
-
         <div>
           <label>Phone:</label>
           <input
             type="text"
-            value={phone}
-            onChange={(e) => setPhone(e.target.value)}
+            name="phone"
+            value={formData.phone}
+            onChange={handleChange}
             required
           />
+          {formSubmitted && !formData.phone && (
+            <span className="error">Phone is required</span>
+          )}
         </div>
-
         <div>
           <label>Hotel Name:</label>
           <input type="text" value={hotelName} disabled />
         </div>
-
         <div>
           <label>Check-In Date:</label>
           <input
             type="date"
-            value={checkInDate}
-            onChange={(e) => setCheckInDate(e.target.value)}
+            name="checkInDate"
+            value={formData.checkInDate}
+            onChange={handleChange}
             required
           />
+          {formSubmitted && !formData.checkInDate && (
+            <span className="error">Check-in date is required</span>
+          )}
         </div>
-
         <div>
           <label>Check-In Time:</label>
           <input
             type="time"
-            value={checkInTime}
-            onChange={(e) => setCheckInTime(e.target.value)}
+            name="checkInTime"
+            value={formData.checkInTime}
+            onChange={handleChange}
             required
           />
+          {formSubmitted && !formData.checkInTime && (
+            <span className="error">Check-in time is required</span>
+          )}
         </div>
-
         <div>
           <label>Check-Out Date:</label>
           <input
             type="date"
-            value={checkOutDate}
-            onChange={(e) => setCheckOutDate(e.target.value)}
+            name="checkOutDate"
+            value={formData.checkOutDate}
+            onChange={handleChange}
             required
           />
+          {formSubmitted && !formData.checkOutDate && (
+            <span className="error">Check-out date is required</span>
+          )}
         </div>
-
         <div>
           <label>Check-Out Time:</label>
           <input
             type="time"
-            value={checkOutTime}
-            onChange={(e) => setCheckOutTime(e.target.value)}
+            name="checkOutTime"
+            value={formData.checkOutTime}
+            onChange={handleChange}
             required
           />
+          {formSubmitted && !formData.checkOutTime && (
+            <span className="error">Check-out time is required</span>
+          )}
         </div>
-
         <div>
           <label>Duration (Days):</label>
-          <input type="number" value={duration} disabled />
+          <input type="number" value={formData.duration} disabled />
+          {formSubmitted && formData.duration <= 0 && (
+            <span className="error">Duration must be greater than 0</span>
+          )}
         </div>
-
         <div>
           <label>Total Price:</label>
-          <input type="number" value={totalPrice} disabled />
+          <input type="number" value={formData.totalPrice} disabled />
         </div>
-
         <button type="submit">Book Now</button>
       </form>
     </div>
