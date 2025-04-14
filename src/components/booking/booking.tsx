@@ -33,7 +33,7 @@ const Booking: React.FC = () => {
         ) : (
           <ul>
             {bookings.map((booking, index) => (
-              <li key={index} className="booking-item">
+              <li key={booking.id} className="booking-item">
                 <p><strong>Name:</strong> {booking.name}</p>
                 <p><strong>Phone:</strong> {booking.phone}</p>
                 <p><strong>Hotel:</strong> {booking.hotel_name}</p>
