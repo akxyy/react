@@ -1,12 +1,15 @@
 import React, { useState, useEffect } from "react";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
+import { useSelector } from "react-redux";
 import { apiRequest } from "../helpers/helperFunction";
+import { RootState } from "../../redux/store";
 import "./BookingForm.css";
 
 const BookingForm: React.FC = () => {
   const navigate = useNavigate();
-  const location = useLocation();
-  const { hotelName = "", pricePerNight = 0 } = location.state;
+  const { hotelName, pricePerNight } = useSelector(
+    (state: RootState) => state.booking
+  );
 
   const [formSubmitted, setFormSubmitted] = useState(false);
   const [formData, setFormData] = useState({
