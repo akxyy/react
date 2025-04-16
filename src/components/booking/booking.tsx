@@ -16,6 +16,7 @@ const Booking: React.FC = () => {
           },
         });
         setBookings(response.data.data);
+
       } catch (error) {
         console.error('Error fetching bookings:', error);
       }
@@ -41,7 +42,7 @@ const Booking: React.FC = () => {
                 <p><strong>Check-Out:</strong> {booking.checkout}{booking.checkOutTime ? ` at ${booking.checkOutTime}` : ''}</p>
                 <p><strong>Duration:</strong> {booking.duration} days</p>
                 <p><strong>Total:</strong> ${booking.Price}</p>
-                <p><strong>Status:</strong> {booking.bookingStatus || 'Confirmed'}</p>
+                <p><strong>Status:</strong> {'Confirmed'}</p>
               </li>
             ))}
           </ul>
