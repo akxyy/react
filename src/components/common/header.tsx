@@ -37,15 +37,15 @@ function Header() {
               <li><Link to="/bookings">Bookings</Link></li>
             )}
             <li>
-              <div className="user-info" onClick={toggleDropdown}>
+              <button className="user-info" onClick={toggleDropdown}>
                 <img src={process.env.PUBLIC_URL + '/images/pfp.png'} alt="User Icon" className="user-icon" />
                 <span>{username}</span>
-                {dropdownVisible && (
-                  <div className="logout-dropdown">
-                    <button onClick={handleLogout}>Logout</button>
-                  </div>
-                )}
-              </div>
+              </button>
+              {dropdownVisible && (
+                <div className="logout-dropdown">
+                  <button onClick={handleLogout}>Logout</button>
+                </div>
+              )}
             </li>
           </ul>
         </nav>

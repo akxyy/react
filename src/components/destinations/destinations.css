@@ -31,10 +31,20 @@
     cursor: pointer;
     transition: transform 0.2s;
     box-shadow: 1px 1px 5px lightblue;
+    background: none;
+    border: none;
+    text-align: left;
+    width: 100%;
 }
 
 .destination-item:hover {
     transform: scale(1.03);
+}
+
+.destination-item h3,
+.destination-item p {
+    margin: 5px 0;
+    color: black;
 }
 
 .search-bar-container {

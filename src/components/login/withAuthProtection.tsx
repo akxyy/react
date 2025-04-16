@@ -10,7 +10,7 @@ const withAuthProtection = <P extends object>(WrappedComponent: React.ComponentT
       if (!token) {
         navigate("/auth/login");
       }
-    }, [token,navigate]);
+    }, [token]);
 
     return <WrappedComponent {...props} />;
   };

@@ -16,6 +16,7 @@ const Booking: React.FC = () => {
           },
         });
         setBookings(response.data.data);
+
       } catch (error) {
         console.error('Error fetching bookings:', error);
       }
@@ -33,7 +34,7 @@ const Booking: React.FC = () => {
         ) : (
           <ul>
             {bookings.map((booking, index) => (
-              <li key={index} className="booking-item">
+              <li key={booking.id} className="booking-item">
                 <p><strong>Name:</strong> {booking.name}</p>
                 <p><strong>Phone:</strong> {booking.phone}</p>
                 <p><strong>Hotel:</strong> {booking.hotel_name}</p>
@@ -41,7 +42,7 @@ const Booking: React.FC = () => {
                 <p><strong>Check-Out:</strong> {booking.checkout}{booking.checkOutTime ? ` at ${booking.checkOutTime}` : ''}</p>
                 <p><strong>Duration:</strong> {booking.duration} days</p>
                 <p><strong>Total:</strong> ${booking.Price}</p>
-                <p><strong>Status:</strong> {booking.bookingStatus || 'Confirmed'}</p>
+                <p><strong>Status:</strong> {'Confirmed'}</p>
               </li>
             ))}
           </ul>

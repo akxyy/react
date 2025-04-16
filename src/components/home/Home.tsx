@@ -7,13 +7,13 @@ import Footer from '../common/footer';
 
 const Home: React.FC = () => {
   const navigate = useNavigate();
-  const { token, username } = useSelector((state: any) => state.user);
+  const { token } = useSelector((state: any) => state.user);
 
   useEffect(() => {
     if (!token) {
       navigate("/auth/login");
     }
-  }, [token, navigate, username]);
+  }, [token]);
 
   return (
     <div className="home-container">

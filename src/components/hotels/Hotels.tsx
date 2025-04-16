@@ -1,10 +1,12 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
 import { apiRequest } from "../helpers/helperFunction";
 import Header from "../common/header";
 import Footer from "../common/footer";
 import "./hotel.css";
 import withAuthProtection from "../login/withAuthProtection";
+import { setHotelDetails } from "../../redux/bookingSlice";
 
 interface Hotel {
   id: number;
@@ -33,6 +35,7 @@ const Hotels: React.FC = () => {
   });
 
   const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   useEffect(() => {
     const fetchDestinations = async () => {
@@ -75,12 +78,13 @@ const Hotels: React.FC = () => {
   };
 
   const handleBookNow = (hotel: Hotel) => {
-    navigate("/booking-form", {
-      state: {
+    dispatch(
+      setHotelDetails({
         hotelName: hotel.name,
         pricePerNight: hotel.price_per_night,
-      },
-    });
+      })
+    );
+    navigate("/booking-form");
   };
 
   return (
@@ -96,7 +100,7 @@ const Hotels: React.FC = () => {
           <select
             className="destination-dropdown"
             onChange={handleDestinationChange}
-            value={state.selectedDestinationId || ""}
+            value={state.selectedDestinationId ?? ""}
           >
             <option value="">Select Destination</option>
             {state.destinations.map((destination) => (
