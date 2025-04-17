@@ -5,7 +5,7 @@ import './header.css';
 function Header() {
   const navigate = useNavigate();
   const [dropdownVisible, setDropdownVisible] = useState(false);
-  const [username] = useState(localStorage.getItem("username") ?? "User");
+  const username = localStorage.getItem("username")
 
   const path = window.location.pathname;
 

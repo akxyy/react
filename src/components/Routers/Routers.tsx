@@ -7,6 +7,7 @@ import Hotels from '../hotels/Hotels';
 import Booking from '../booking/booking';
 import NotFound from '../NotFound/NotFound';
 import BookingForm from '../booking/BookingForm';
+import HotelsOfDestination from '../destinations/HotelsOfDestination';
 
 function Routers() {
   return (
@@ -20,6 +21,7 @@ function Routers() {
         <Route path="/bookings" element={<Booking />} />
         <Route path="*" element={<NotFound/>}/>
         <Route path="/booking-form" element={<BookingForm />} />
+        <Route path='/hotel-details' element={<HotelsOfDestination/>}/>
       </Routes>
     </Router>
   );

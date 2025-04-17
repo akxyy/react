@@ -1,6 +1,6 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState } from "react";
 import "./booking.css";
-import { apiRequest } from '../helpers/helperFunction';
+import { apiRequest } from "../helpers/helperFunction";
 
 const Booking: React.FC = () => {
   const [bookings, setBookings] = useState<any[]>([]);
@@ -10,15 +10,14 @@ const Booking: React.FC = () => {
       const token = localStorage.getItem("token");
 
       try {
-        const response = await apiRequest('/booking', "GET", {
+        const response = await apiRequest("/booking", "GET", {
           headers: {
             Authorization: `Bearer ${token}`,
           },
         });
         setBookings(response.data.data);
-
       } catch (error) {
-        console.error('Error fetching bookings:', error);
+        console.error("Error fetching bookings:", error);
       }
     };
 
@@ -35,14 +34,32 @@ const Booking: React.FC = () => {
           <ul>
             {bookings.map((booking, index) => (
               <li key={booking.id} className="booking-item">
-                <p><strong>Name:</strong> {booking.name}</p>
-                <p><strong>Phone:</strong> {booking.phone}</p>
-                <p><strong>Hotel:</strong> {booking.hotel_name}</p>
-                <p><strong>Check-In:</strong> {booking.checkin}{booking.checkInTime ? ` at ${booking.checkInTime}` : ''}</p>
-                <p><strong>Check-Out:</strong> {booking.checkout}{booking.checkOutTime ? ` at ${booking.checkOutTime}` : ''}</p>
-                <p><strong>Duration:</strong> {booking.duration} days</p>
-                <p><strong>Total:</strong> ${booking.Price}</p>
-                <p><strong>Status:</strong> {'Confirmed'}</p>
+                <p>
+                  <strong>Name:</strong> {booking.name}
+                </p>
+                <p>
+                  <strong>Phone:</strong> {booking.phone}
+                </p>
+                <p>
+                  <strong>Hotel:</strong> {booking.hotel_name}
+                </p>
+                <p>
+                  <strong>Check-In:</strong> {booking.checkin}
+                  {booking.checkInTime ? ` at ${booking.checkInTime}` : ""}
+                </p>
+                <p>
+                  <strong>Check-Out:</strong> {booking.checkout}
+                  {booking.checkOutTime ? ` at ${booking.checkOutTime}` : ""}
+                </p>
+                <p>
+                  <strong>Duration:</strong> {booking.duration} days
+                </p>
+                <p>
+                  <strong>Total:</strong> ${booking.Price}
+                </p>
+                <p>
+                  <strong>Status:</strong> {"Confirmed"}
+                </p>
               </li>
             ))}
           </ul>

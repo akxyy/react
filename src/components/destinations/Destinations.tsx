@@ -4,6 +4,8 @@ import Header from "../common/header";
 import Footer from "../common/footer";
 import { apiRequest } from "../helpers/helperFunction";
 import { useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { setDestinationState } from "../../redux/destinationSlice";
 
 interface Destination {
   id: number;
@@ -31,6 +33,7 @@ const Destinations: React.FC = () => {
   });
 
   const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   useEffect(() => {
     const token = localStorage.getItem("token");
@@ -111,6 +114,11 @@ const Destinations: React.FC = () => {
     <button
       key={destination.id}
       className="destination-item"
+      onClick={() => {
+        console.log(destination.id)
+        dispatch(setDestinationState({ destination_id: destination.id }));
+        navigate("/hotel-details");
+      }}
     >
       <img src={destination.image_url} alt={destination.name} />
       <h3>{destination.name}</h3>
