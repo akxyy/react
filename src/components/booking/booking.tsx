@@ -37,11 +37,11 @@ const Booking: React.FC = () => {
                 <p><strong>Name:</strong> {booking.name}</p>
                 <p><strong>Phone:</strong> {booking.phone}</p>
                 <p><strong>Hotel:</strong> {booking.hotel_name}</p>
-                <p><strong>Check-In:</strong> {booking.checkin}{booking.checkInTime ? ` at ${booking.checkInTime}` : ''}</p>
-                <p><strong>Check-Out:</strong> {booking.checkout}{booking.checkOutTime ? ` at ${booking.checkOutTime}` : ''}</p>
+                <p><strong>Check-In:</strong> {booking.checkin}</p>
+                <p><strong>Check-Out:</strong> {booking.checkout}</p>
                 <p><strong>Duration:</strong> {booking.duration} days</p>
                 <p><strong>Total:</strong> ${booking.Price}</p>
-                <p><strong>Status:</strong> {booking.bookingStatus || 'Confirmed'}</p>
+                <p><strong>Status:</strong> {'Confirmed'}</p>
               </li>
             ))}
           </ul>
