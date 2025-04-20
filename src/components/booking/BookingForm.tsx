@@ -61,7 +61,7 @@ const BookingForm: React.FC = () => {
     if (name === "name") {
       setFormData((prev) => ({
         ...prev,
-        [name]: value.trimStart(),
+        [name]: value,
       }));
     } else if (name === "phone") {
       if (value.length <= 10 && /^\d*$/.test(value)) {
