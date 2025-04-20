@@ -67,7 +67,7 @@ const Hotels: React.FC = () => {
   const handleDestinationChange = (
     event: React.ChangeEvent<HTMLSelectElement>
   ) => {
-    const destinationId = parseInt(event.target.value, 10);
+    const destinationId = parseInt(event.target.value);
     setState((prev) => ({
       ...prev,
       selectedDestinationId: destinationId || null,
