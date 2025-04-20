@@ -1,6 +1,0 @@
-projectKey=tourism
-serverUrl=http://localhost:9000
-serverVersion=24.12.0.100206
-dashboardUrl=http://localhost:9000/dashboard?id=tourism
-ceTaskId=3639f3f3-9572-49e3-bf37-a6a512dc291e
-ceTaskUrl=http://localhost:9000/api/ce/task?id=3639f3f3-9572-49e3-bf37-a6a512dc291e
