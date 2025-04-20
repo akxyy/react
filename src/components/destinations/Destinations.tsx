@@ -108,15 +108,12 @@ const Destinations: React.FC = () => {
   };
 
   const renderDestinationItem = (destination: Destination) => (
-    <button
-      key={destination.id}
-      className="destination-item"
-    >
+    <div key={destination.id} className="destination-item">
       <img src={destination.image_url} alt={destination.name} />
       <h3>{destination.name}</h3>
       <p>{destination.country}</p>
       <p>{destination.description}</p>
-    </button>
+    </div>
   );
 
   let destinationsToRender;
