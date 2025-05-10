@@ -1,15 +1,16 @@
 import React, { useState, useEffect } from "react";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
+import { useSelector } from "react-redux";
 import { apiRequest } from "../helpers/helperFunction";
 import "./BookingForm.css";
 
 const BookingForm: React.FC = () => {
-  const navigate = useNavigate()
-  const location = useLocation()
-  const { hotelName = "", pricePerNight = 0 } = location.state
+  const navigate = useNavigate();
+  const { hotelName, pricePerNight } = useSelector(
+    (state: any) => state.booking
+  );
 
-  const [formSubmitted, setFormSubmitted] = useState(false)
-
+  const [formSubmitted, setFormSubmitted] = useState(false);
   const [formData, setFormData] = useState({
     name: "",
     phone: "",
@@ -29,16 +30,10 @@ const BookingForm: React.FC = () => {
       formData.checkOutTime &&
       pricePerNight > 0
     ) {
-      const checkIn = new Date(
-        `${formData.checkInDate}T${formData.checkInTime}`
-      );
-      const checkOut = new Date(
-        `${formData.checkOutDate}T${formData.checkOutTime}`
-      );
-
+      const checkIn = new Date(`${formData.checkInDate}T${formData.checkInTime}`);
+      const checkOut = new Date(`${formData.checkOutDate}T${formData.checkOutTime}`);
       const durationInMillis = checkOut.getTime() - checkIn.getTime();
       const durationInDays = Math.ceil(durationInMillis / (1000 * 3600 * 24));
-
       if (durationInDays > 0) {
         setFormData((prev) => ({
           ...prev,
@@ -63,11 +58,10 @@ const BookingForm: React.FC = () => {
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
-
     if (name === "name") {
       setFormData((prev) => ({
         ...prev,
-        [name]: value.trimStart(),
+        [name]: value,
       }));
     } else if (name === "phone") {
       if (value.length <= 10 && /^\d*$/.test(value)) {
@@ -87,7 +81,6 @@ const BookingForm: React.FC = () => {
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     setFormSubmitted(true);
-
     if (
       !formData.name.trim() ||
       !formData.phone ||
@@ -99,7 +92,6 @@ const BookingForm: React.FC = () => {
     ) {
       return;
     }
-
     const newBooking = {
       name: formData.name.trim(),
       checkin: formData.checkInDate,
@@ -109,7 +101,6 @@ const BookingForm: React.FC = () => {
       hotel_name: hotelName,
       phone: formData.phone,
     };
-
     try {
       await apiRequest("/booking", "POST", newBooking);
       navigate("/bookings");
@@ -123,8 +114,9 @@ const BookingForm: React.FC = () => {
       <h1>Booking Form</h1>
       <form onSubmit={handleSubmit} noValidate>
         <div>
-          <label>Name:</label>
+          <label htmlFor="name">Name:</label>
           <input
+            id="name"
             type="text"
             name="name"
             value={formData.name}
@@ -136,8 +128,9 @@ const BookingForm: React.FC = () => {
           )}
         </div>
         <div>
-          <label>Phone:</label>
+          <label htmlFor="phone">Phone:</label>
           <input
+            id="phone"
             type="text"
             name="phone"
             value={formData.phone}
@@ -149,12 +142,13 @@ const BookingForm: React.FC = () => {
           )}
         </div>
         <div>
-          <label>Hotel Name:</label>
-          <input type="text" value={hotelName} disabled />
+          <label htmlFor="hotelName">Hotel Name:</label>
+          <input id="hotelName" type="text" value={hotelName} disabled />
         </div>
         <div>
-          <label>Check-In Date:</label>
+          <label htmlFor="checkInDate">Check-In Date:</label>
           <input
+            id="checkInDate"
             type="date"
             name="checkInDate"
             value={formData.checkInDate}
@@ -166,8 +160,9 @@ const BookingForm: React.FC = () => {
           )}
         </div>
         <div>
-          <label>Check-In Time:</label>
+          <label htmlFor="checkInTime">Check-In Time:</label>
           <input
+            id="checkInTime"
             type="time"
             name="checkInTime"
             value={formData.checkInTime}
@@ -179,8 +174,9 @@ const BookingForm: React.FC = () => {
           )}
         </div>
         <div>
-          <label>Check-Out Date:</label>
+          <label htmlFor="checkOutDate">Check-Out Date:</label>
           <input
+            id="checkOutDate"
             type="date"
             name="checkOutDate"
             value={formData.checkOutDate}
@@ -192,8 +188,9 @@ const BookingForm: React.FC = () => {
           )}
         </div>
         <div>
-          <label>Check-Out Time:</label>
+          <label htmlFor="checkOutTime">Check-Out Time:</label>
           <input
+            id="checkOutTime"
             type="time"
             name="checkOutTime"
             value={formData.checkOutTime}
@@ -205,15 +202,15 @@ const BookingForm: React.FC = () => {
           )}
         </div>
         <div>
-          <label>Duration (Days):</label>
-          <input type="number" value={formData.duration} disabled />
+          <label htmlFor="duration">Duration (Days):</label>
+          <input id="duration" type="number" value={formData.duration} disabled />
           {formSubmitted && formData.duration <= 0 && (
             <span className="error">Duration must be greater than 0</span>
           )}
         </div>
         <div>
-          <label>Total Price:</label>
-          <input type="number" value={formData.totalPrice} disabled />
+          <label htmlFor="totalPrice">Total Price:</label>
+          <input id="totalPrice" type="number" value={formData.totalPrice} disabled />
         </div>
         <button type="submit">Book Now</button>
       </form>

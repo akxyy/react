@@ -3,6 +3,7 @@ import "./destinations.css";
 import Header from "../common/header";
 import Footer from "../common/footer";
 import { apiRequest } from "../helpers/helperFunction";
+import { useNavigate } from "react-router-dom";
 
 interface Destination {
   id: number;
@@ -28,6 +29,8 @@ const Destinations: React.FC = () => {
     searchQuery: "",
     searchResult: [],
   });
+
+  const navigate = useNavigate();
 
   useEffect(() => {
     const token = localStorage.getItem("token");
@@ -104,9 +107,28 @@ const Destinations: React.FC = () => {
     }
   };
 
+  const renderDestinationItem = (destination: Destination) => (
+    <div key={destination.id} className="destination-item">
+      <img src={destination.image_url} alt={destination.name} />
+      <h3>{destination.name}</h3>
+      <p>{destination.country}</p>
+      <p>{destination.description}</p>
+    </div>
+  );
+
+  let destinationsToRender;
+
+  if (state.searchResult.length > 0) {
+    destinationsToRender = state.searchResult.map(renderDestinationItem);
+  } else if (state.destinations.length > 0) {
+    destinationsToRender = state.destinations.map(renderDestinationItem);
+  } else {
+    destinationsToRender = <p>No destinations found.</p>;
+  }
+
   return (
     <div className="maindiv">
-      <Header/>
+      <Header />
       <div className="search-bar-container">
         <input
           type="text"
@@ -122,32 +144,9 @@ const Destinations: React.FC = () => {
         {state.loginStatus && (
           <div className="status-message">{state.loginStatus}</div>
         )}
-
-        <div className="image-container">
-          {state.searchResult.length > 0 ? (
-            state.searchResult.map((destination) => (
-              <div key={destination.id} className="destination-item">
-                <img src={destination.image_url} alt={destination.name} />
-                <h3>{destination.name}</h3>
-                <p>{destination.country}</p>
-                <p>{destination.description}</p>
-              </div>
-            ))
-          ) : state.destinations.length > 0 ? (
-            state.destinations.map((destination) => (
-              <div key={destination.id} className="destination-item">
-                <img src={destination.image_url} alt={destination.name} />
-                <h3>{destination.name}</h3>
-                <p>{destination.country}</p>
-                <p>{destination.description}</p>
-              </div>
-            ))
-          ) : (
-            <p>No destinations found.</p>
-          )}
-        </div>
+        <div className="image-container">{destinationsToRender}</div>
       </div>
-      <Footer/>
+      <Footer />
     </div>
   );
 };
